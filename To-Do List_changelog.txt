@@ -1,0 +1,17 @@
+1.0
+- Initial release
+1.1
+- Switched from binary to JSON serialization
+- Split solution into two projects, one for the front-end (GUI), the other for the back-end (data management)
+- Renamed to To-Do List
+1.2
+- Removed second project and moved the data management over to the main project as it was too impractical
+- Added date beneath entry name
+1.3
+- Changed theme to compatible material theme
+- Replaced action bar with toolbar
+- Added splash screen
+- Changed date to a readable format (yesterday, 6 days ago etc.)
+1.4
+- Gradually changing to Material theme with support for pre-Lollipop versions...
+- Google Driver support (not started)
