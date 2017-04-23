@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <item name="ic_button_add" type="drawable">@drawable/ic_add_white_24dp</item>
+</resources>
