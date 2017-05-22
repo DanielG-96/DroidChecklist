@@ -19,15 +19,15 @@ namespace DroidChecklist
 {
     public class FragmentChecklist : Fragment
     {
-        List<Entry> entries = new List<Entry>();
-        ChecklistAdapter adapter;
         const string FILE_NAME = "entries.json";
-        int maxLength = 35;
 
         private Context mContext;
         private FloatingActionButton fabAdd;
         private CoordinatorLayout mLayout;
-        private ListView mListView;
+        private RecyclerView mRecyclerView;
+        private RecyclerView.LayoutManager mLayoutManager;
+        private List<Entry> mEntriesList;
+        private ChecklistRecyclerAdapter mAdapter;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -38,25 +38,28 @@ namespace DroidChecklist
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.fragment_checklist, container, false);
-
-            // setup widgets
-            mLayout = view.FindViewById<CoordinatorLayout>(Resource.Id.layout_coordinator);
-            mListView = view.FindViewById<ListView>(Resource.Id.list_view_entries);
-            fabAdd = view.FindViewById<FloatingActionButton>(Resource.Id.fab_add);
             
-            adapter = new ChecklistAdapter(Activity, entries);
-            LoadList();
+            mLayout = view.FindViewById<CoordinatorLayout>(Resource.Id.layout_coordinator);
 
-            mListView.Adapter = adapter;
-            RegisterForContextMenu(mListView);
+            mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.list_view_entries);
+            //mEntriesList = new List<Entry>();
+            mEntriesList = Entry.GetTestData();
 
+            mLayoutManager = new LinearLayoutManager(mContext);
+            mRecyclerView.SetLayoutManager(mLayoutManager);
+
+            mAdapter = new ChecklistRecyclerAdapter(Activity, mEntriesList);
+            mRecyclerView.SetAdapter(mAdapter);
+
+            //LoadList();
+
+            fabAdd = view.FindViewById<FloatingActionButton>(Resource.Id.fab_add);
             fabAdd.Click += (sender, e) =>
             {
                 var alertAdd = new AlertDialog.Builder(mContext);
-                alertAdd.SetMessage("Entry name (Limit " + maxLength + " characters)");
+                alertAdd.SetMessage("Entry name");
                 EditText inputBox = new EditText(mContext);
                 inputBox.SetMaxLines(1);
-                inputBox.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(maxLength) });
                 alertAdd.SetView(inputBox);
                 alertAdd.SetPositiveButton("Add", delegate
                 {
@@ -65,7 +68,7 @@ namespace DroidChecklist
                         Entry newEntry = new Entry() { Title = inputBox.Text, DateModified = DateTime.Now };
                         Activity.RunOnUiThread(() =>
                         {
-                            adapter.AddEntry(newEntry);
+                            mAdapter.AddEntry(newEntry);
                         });
                     }
                 });
@@ -75,7 +78,7 @@ namespace DroidChecklist
 
             return view;
         }
-        
+
         /// <summary>
         /// Called when the app is closed
         /// </summary>
@@ -97,32 +100,15 @@ namespace DroidChecklist
         /// <summary>
         /// Called when item from toolbar is selected
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns>True if selected, false if not</returns>
+        /// <param name = "item" ></ param >
+        /// < returns > True if selected, false if not</returns>
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             var selectedItem = item.TitleFormatted.ToString();
             switch (selectedItem)
             {
                 case "Clear":
-                    if (adapter.AnyChecked())
-                    {
-                        var alertClear = new AlertDialog.Builder(mContext);
-                        alertClear.SetMessage("Clear all completed items?");
-                        alertClear.SetPositiveButton("Yes", delegate
-                        {
-                            Activity.RunOnUiThread(() =>
-                            {
-                                adapter.ClearEntries();
-                            });
-                        });
-                        alertClear.SetNegativeButton("No", delegate { });
-                        alertClear.Show();
-                    }
-                    else
-                    {
-                        Toast.MakeText(mContext, "No completed entries to remove", ToastLength.Short).Show();
-                    }
+                    Toast.MakeText(mContext, "Not implemented!", ToastLength.Short).Show();
                     break;
             }
             return base.OnOptionsItemSelected(item);
@@ -141,39 +127,41 @@ namespace DroidChecklist
             switch (selectedTitle)
             {
                 case "Edit":
-                    var editDialog = new AlertDialog.Builder(mContext);
-                    editDialog.SetTitle("Edit entry (Limit " + maxLength + " characters)");
-                    EditText editBox = new EditText(mContext);
-                    editBox.SetMaxLines(1);
-                    editBox.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(maxLength) });
-                    editBox.Text = entries[info.Position].Title;
-                    editDialog.SetView(editBox);
-                    editDialog.SetPositiveButton("Save", delegate
-                    {
-                        if (!string.IsNullOrEmpty(editBox.Text))
-                        {
-                            Activity.RunOnUiThread(() =>
-                            {
-                                adapter.EditEntry(info.Position, editBox.Text);
-                            });
-                        }
-                    });
-                    editDialog.SetNegativeButton("Cancel", delegate { });
-                    editDialog.Show();
+                    Toast.MakeText(mContext, "Not implemented!", ToastLength.Short).Show();
+                    //var editDialog = new AlertDialog.Builder(mContext);
+                    //editDialog.SetTitle("Edit entry (Limit " + maxLength + " characters)");
+                    //EditText editBox = new EditText(mContext);
+                    //editBox.SetMaxLines(1);
+                    //editBox.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(maxLength) });
+                    //editBox.Text = entries[info.Position].Title;
+                    //editDialog.SetView(editBox);
+                    //editDialog.SetPositiveButton("Save", delegate
+                    //{
+                    //    if (!string.IsNullOrEmpty(editBox.Text))
+                    //    {
+                    //        Activity.RunOnUiThread(() =>
+                    //        {
+                    //            mAdapter.EditEntry(info.Position, editBox.Text);
+                    //        });
+                    //    }
+                    //});
+                    //editDialog.SetNegativeButton("Cancel", delegate { });
+                    //editDialog.Show();
                     break;
                 case "Delete":
-                    var deleteDialog = new AlertDialog.Builder(mContext);
-                    deleteDialog.SetTitle("Delete");
-                    deleteDialog.SetMessage("Are you sure you want to delete this item?");
-                    deleteDialog.SetPositiveButton("Yes", delegate
-                    {
-                        Activity.RunOnUiThread(() =>
-                        {
-                            adapter.DeleteEntry(info.Position);
-                        });
-                    });
-                    deleteDialog.SetNegativeButton("No", delegate { });
-                    deleteDialog.Show();
+                    Toast.MakeText(mContext, "Not implemented!", ToastLength.Short).Show();
+                    //var deleteDialog = new AlertDialog.Builder(mContext);
+                    //deleteDialog.SetTitle("Delete");
+                    //deleteDialog.SetMessage("Are you sure you want to delete this item?");
+                    //deleteDialog.SetPositiveButton("Yes", delegate
+                    //{
+                    //    Activity.RunOnUiThread(() =>
+                    //    {
+                    //        mAdapter.DeleteEntry(info.Position);
+                    //    });
+                    //});
+                    //deleteDialog.SetNegativeButton("No", delegate { });
+                    //deleteDialog.Show();
                     break;
             }
             return base.OnContextItemSelected(item);
@@ -195,18 +183,7 @@ namespace DroidChecklist
 
                 if (result.Success)
                 {
-                    List<Entry> entriesToLoad = result.Data;
-                    if (entriesToLoad.Count > 0 && entriesToLoad != null)
-                    {
-                        foreach (Entry entry in entriesToLoad)
-                        {
-                            Activity.RunOnUiThread(() =>
-                            {
-                                adapter.AddEntry(entry);
-                            });
-                        }
-                    }
-
+                    mEntriesList = result.Data;
                 }
                 else
                 {
@@ -223,10 +200,8 @@ namespace DroidChecklist
         {
             var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             var filePath = Path.Combine(documentsPath, FILE_NAME);
-
-            List<Entry> entriesToSave = adapter.GetEntries();
-
-            var result = JsonSerialization<Entry>.SerializeList(filePath, entriesToSave);
+            
+            var result = JsonSerialization<Entry>.SerializeList(filePath, mEntriesList);
 
             if (!result.Success)
             {

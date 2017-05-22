@@ -1,14 +1,8 @@
 using Android.App;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Support.V7.App;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using AppCompat = Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DroidChecklist
