@@ -42,8 +42,7 @@ namespace DroidChecklist
             mLayout = view.FindViewById<CoordinatorLayout>(Resource.Id.layout_coordinator);
 
             mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.list_view_entries);
-            //mEntriesList = new List<Entry>();
-            mEntriesList = Entry.GetTestData();
+            mEntriesList = new List<Entry>();
 
             mLayoutManager = new LinearLayoutManager(mContext);
             mRecyclerView.SetLayoutManager(mLayoutManager);
@@ -51,7 +50,7 @@ namespace DroidChecklist
             mAdapter = new ChecklistRecyclerAdapter(Activity, mEntriesList);
             mRecyclerView.SetAdapter(mAdapter);
 
-            //LoadList();
+            LoadList();
 
             fabAdd = view.FindViewById<FloatingActionButton>(Resource.Id.fab_add);
             fabAdd.Click += (sender, e) =>

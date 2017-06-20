@@ -70,17 +70,6 @@ namespace DroidChecklist
         }
 
         /// <summary>
-        /// Called when toolbar options menu is created
-        /// </summary>
-        /// <param name="menu"></param>
-        /// <returns>True if created, false if not</returns>
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
-            return base.OnCreateOptionsMenu(menu);
-        }
-
-        /// <summary>
         /// Called when the context menu opens
         /// </summary>
         /// <param name="menu"></param>
