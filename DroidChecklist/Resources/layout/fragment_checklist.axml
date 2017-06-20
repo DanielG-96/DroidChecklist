@@ -16,5 +16,7 @@
         android:src="@drawable/ic_button_add"
         app:backgroundTint="?attr/colorAccent"
         app:layout_anchor="@+id/list_view_entries"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end" 
+        app:layout_behavior="com.danielg.DroidChecklist.FABBehavior"
+        />
 </android.support.design.widget.CoordinatorLayout>
